@@ -1,17 +1,16 @@
-
-import { Stack } from 'expo-router';
-
-
+import { Stack } from "expo-router";
+import { SafeAreaView } from "react-native-safe-area-context";
 
 const Layout = () => {
+  return (
+    // <SafeAreaView>
+    <Stack>
+      <Stack.Screen name="onboarding" options={{ headerShown: false }} />
+      <Stack.Screen name="sign-up" options={{ headerShown: false }} />
+      <Stack.Screen name="sign-in" options={{ headerShown: false }} />
+    </Stack>
+    // </SafeAreaView>
+  );
+};
 
-    return (
-        <Stack >
-            <Stack.Screen name="onboarding" options={{ headerShown: false }} />
-            <Stack.Screen name="sign-up" options={{ headerShown: false }} />
-            <Stack.Screen name="sign-in" options={{ headerShown: false }} />
-        </Stack>
-    );
-}
-
-export default Layout
+export default Layout;
