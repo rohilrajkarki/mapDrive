@@ -4,10 +4,13 @@ import { Image, Text, TouchableOpacity, View } from "react-native";
 import { SafeAreaView } from "react-native-safe-area-context";
 import Swiper from "react-native-swiper";
 import { onboarding } from "../constants";
+import CustomButton from "../components/CustomButton";
 
 const Onboarding = () => {
   const swiperRef = useRef<Swiper>(null);
   const [activeIndex, setActiveIndex] = useState(0);
+  const isLastSlide = activeIndex === onboarding.length - 1;
+
   return (
     <SafeAreaView className="flex h-full items-center justify-between bg-white">
       <TouchableOpacity
@@ -37,7 +40,7 @@ const Onboarding = () => {
               resizeMode="contain"
             />
             <View className="flex flex-row items-center justify-center w-full mt-10">
-              <Text className="text-black text-3xl font-bold mx-10 text-center">
+              <Text className="text-white text-3xl font-bold mx-10 text-center">
                 {item.title}
               </Text>
             </View>
@@ -47,6 +50,15 @@ const Onboarding = () => {
           </View>
         ))}
       </Swiper>
+      <CustomButton
+        onPress={() =>
+          isLastSlide
+            ? router.replace("/(auth)/sign-up")
+            : swiperRef?.current?.scrollBy(1)
+        }
+        title={isLastSlide ? "Get Started" : "Next"}
+        className="w-11/12 mt-10 mb-5"
+      />
     </SafeAreaView>
   );
 };
