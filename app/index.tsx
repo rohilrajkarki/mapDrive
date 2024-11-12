@@ -1,21 +1,12 @@
-import { Redirect } from "expo-router"
-import { StyleSheet, Text } from "react-native"
+import { Redirect, Stack } from "expo-router";
+import { useAuth } from "@clerk/clerk-expo";
 
-const Home = () => {
-    return (
-        <Redirect href={"/(auth)/onboarding"} />
-    )
+export default function AuthRoutesLayout() {
+  const { isSignedIn } = useAuth();
+
+  if (isSignedIn) {
+    return <Redirect href="/(root)/(tabs)/home" />;
+  }
+
+  return <Redirect href="/(auth)/onboarding" />;
 }
-
-
-
-const styles = StyleSheet.create({
-    container: {
-        backgroundColor: "red"
-    },
-    text: {
-        fontSize: 50
-    }
-})
-
-export default Home
