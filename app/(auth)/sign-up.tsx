@@ -53,6 +53,8 @@ const SignUp = () => {
 
       if (completeSignUp.status === "complete") {
         //If user is loged in using clerk then create a user in our database also
+        //to do here too
+
         await setActive({ session: completeSignUp.createdSessionId });
         setVerification({ ...verification, state: "success" });
       } else {
