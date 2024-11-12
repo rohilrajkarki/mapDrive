@@ -42,6 +42,7 @@ const SignUp = () => {
   };
 
   const onPressVerify = async () => {
+    //add verification here
     if (!isLoaded) {
       return;
     }
