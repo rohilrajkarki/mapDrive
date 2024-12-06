@@ -1,23 +1,23 @@
-import { SignedIn, SignedOut, useUser } from "@clerk/clerk-expo";
+import { useUser } from "@clerk/clerk-expo";
 import { Link } from "expo-router";
-import { Text, View } from "react-native";
+import { ScrollView, Text, View } from "react-native";
 
-export default function Page() {
+const Home = () => {
   const { user } = useUser();
 
   return (
-    <View>
-      <SignedIn>
+    <ScrollView className="flex-1 bg-white">
+      <View>
         <Text>Hello {user?.emailAddresses[0].emailAddress}</Text>
-      </SignedIn>
-      <SignedOut>
         <Link href="/sign-in">
-          <Text>Sign In</Text>
+          <Text> Home here :Sign In</Text>
         </Link>
         <Link href="/sign-up">
           <Text>Sign Up</Text>
         </Link>
-      </SignedOut>
-    </View>
+      </View>
+    </ScrollView>
   );
-}
+};
+
+export default Home;
