@@ -1,14 +1,16 @@
 import { Link, router } from "expo-router";
 import React, { useState } from "react";
-import { Image, ScrollView, Text, View } from "react-native";
+import { Alert, Image, ScrollView, Text, View } from "react-native";
 import { icons, images } from "../constants";
 import InputField from "../components/InputField";
 import CustomButton from "../components/CustomButton";
 import OAuth from "../components/OAuth";
 import { useSignUp } from "@clerk/clerk-expo";
+import { ReactNativeModal } from "react-native-modal";
 
 const SignUp = () => {
   const { isLoaded, signUp, setActive } = useSignUp();
+  const [showSuccessModal, setShowSuccessModal] = useState(false);
 
   const [form, setForm] = useState({
     name: "",
@@ -23,6 +25,7 @@ const SignUp = () => {
   });
 
   const onSignUpPress = async () => {
+    console.log("SIgn up pressed");
     if (!isLoaded) {
       return;
     }
@@ -37,7 +40,7 @@ const SignUp = () => {
 
       setVerification({ ...verification, state: "pending" });
     } catch (err: any) {
-      console.error(JSON.stringify(err, null, 2));
+      Alert.alert("Error", err.errors[0].longMessage);
     }
   };
 
@@ -52,20 +55,24 @@ const SignUp = () => {
         code: verification.code,
       });
 
+      console.log("Result:", completeSignUp);
       if (completeSignUp.status === "complete") {
         //If user is loged in using clerk then create a user in our database also
         //to do here too
 
         await setActive({ session: completeSignUp.createdSessionId });
         setVerification({ ...verification, state: "success" });
+        console.log("success ma gayo");
       } else {
         setVerification({
           ...verification,
           error: "Verification Failed",
           state: "failed",
         });
+        console.log("failed1 ma gayo");
       }
     } catch (err: any) {
+      console.log("catch failed ma gayo", err);
       setVerification({
         ...verification,
         error: err.errors[0].longMessage,
@@ -125,10 +132,60 @@ const SignUp = () => {
             href="/sign-in"
             className="text-lg text-center text-general-200 mt-10"
           >
-            Already have an account?{" "}
+            Already have an account?
             <Text className="text-primary-500">Log In</Text>
           </Link>
         </View>
+        <ReactNativeModal
+          isVisible={
+            verification.state === "pending" || verification.state === "failed"
+          }
+          // onDismiss={() => console.log("Hello")}
+          onModalHide={() => {
+            if (verification.state === "success") setShowSuccessModal(true);
+          }}
+        >
+          <View className="bg-white px-7 py-9 rounded-2xl min-h-[300px]">
+            <Text className="text-3xl  text-center">Verified</Text>
+            <Text className="text-base text-gray-400 font-Jakarta text-center mt-2">
+              We've sent a verification code to {form.email}
+            </Text>
+            <InputField
+              label="Code"
+              icon={icons.lock}
+              placeholder="12345"
+              keyboardType="numeric"
+              onChangeText={(code) =>
+                setVerification({ ...verification, code })
+              }
+            />
+            {verification.error && (
+              <Text className="text-red-100">{verification.error}</Text>
+            )}
+            <CustomButton
+              title="Verify Email"
+              onPress={onPressVerify}
+              className="mt-5 bg-success-500"
+            />
+          </View>
+        </ReactNativeModal>
+        <ReactNativeModal isVisible={showSuccessModal}>
+          <View className="bg-white px-7 py-9 rounded-2xl min-h-[300px]">
+            <Image
+              source={images.check}
+              className="w-[110px] h-[110px] mx-auto my-5"
+            />
+            <Text className="text-3xl  text-center">Verified</Text>
+            <Text className="text-base text-gray-400 font-Jakarta text-center mt-2">
+              You have successfully verified your account.
+            </Text>
+            <CustomButton
+              title="Browse Home"
+              onPress={() => router.replace("/(tabs)/home")}
+              className="mt-5"
+            />
+          </View>
+        </ReactNativeModal>
       </View>
     </ScrollView>
   );
