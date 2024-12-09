@@ -7,9 +7,11 @@ import {
   Image,
   Platform,
   Keyboard,
+  TouchableOpacity,
 } from "react-native";
-import React from "react";
+import React, { useState } from "react";
 import { InputFieldProps } from "../types/type";
+import { icons } from "../constants";
 
 const InputField = ({
   label,
@@ -22,6 +24,8 @@ const InputField = ({
   className,
   ...props
 }: InputFieldProps) => {
+  const [isPasswordVisible, setIsPasswordVisible] = useState(false);
+
   return (
     <KeyboardAvoidingView
       behavior={Platform.OS === "ios" ? "padding" : "height"}
@@ -39,9 +43,20 @@ const InputField = ({
             )}
             <TextInput
               className={`rounded-full p-4 font-JakartaSemiBold text-[15px] flex-1 ${inputStyle} text-left`}
-              secureTextEntry={secureTextEntry}
+              secureTextEntry={secureTextEntry && isPasswordVisible}
               {...props}
             />
+            {secureTextEntry && (
+              <TouchableOpacity
+                onPress={() => setIsPasswordVisible(!isPasswordVisible)}
+                // style={styles.toggleButton}
+              >
+                <Image
+                  source={isPasswordVisible ? icons.target : icons.eyecross}
+                  className={`w-6 h-6 ml-4 ${iconStyle}`}
+                />
+              </TouchableOpacity>
+            )}
           </View>
         </View>
       </TouchableWithoutFeedback>
