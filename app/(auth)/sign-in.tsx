@@ -33,7 +33,7 @@ const SignIn = () => {
         <View className="p-5">
           <InputField
             label="Email"
-            placeholder="Enter email"
+            placeholder="Enter email..."
             icon={icons.email}
             textContentType="emailAddress"
             value={form.email}
