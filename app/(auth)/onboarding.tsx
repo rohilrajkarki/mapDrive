@@ -15,7 +15,8 @@ const Onboarding = () => {
     <SafeAreaView className="flex h-full items-center justify-between bg-white">
       <TouchableOpacity
         onPress={() => {
-          router.replace("/(auth)/sign-up");
+          router.replace("/(auth)/sign-in");
+          // router.replace("/(root)/home");
         }}
         className="w-full flex justify-end items-end p-5"
       >
@@ -53,7 +54,7 @@ const Onboarding = () => {
       <CustomButton
         onPress={() =>
           isLastSlide
-            ? router.replace("/(auth)/sign-up")
+            ? router.replace("/(auth)/sign-in")
             : swiperRef?.current?.scrollBy(1)
         }
         title={isLastSlide ? "Get Started" : "Next"}

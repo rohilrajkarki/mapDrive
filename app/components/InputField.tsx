@@ -53,7 +53,7 @@ const InputField = ({
               >
                 <Image
                   source={isPasswordVisible ? icons.target : icons.eyecross}
-                  className={`w-6 h-6 ml-4 ${iconStyle}`}
+                  className={`w-6 h-6 ml-4 mr-2 ${iconStyle}`}
                 />
               </TouchableOpacity>
             )}
