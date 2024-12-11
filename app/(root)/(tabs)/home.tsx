@@ -1,12 +1,13 @@
 import { useUser } from "@clerk/clerk-expo";
 import { Link } from "expo-router";
-import { ScrollView, Text, View } from "react-native";
+import { Text, View } from "react-native";
+import { SafeAreaView } from "react-native-safe-area-context";
 
 const Home = () => {
   const { user } = useUser();
 
   return (
-    <ScrollView className="flex-1 bg-white">
+    <SafeAreaView>
       <View>
         <Text>Hello {user?.emailAddresses[0].emailAddress}</Text>
         <Link href="/sign-in">
@@ -16,7 +17,7 @@ const Home = () => {
           <Text>Sign Up</Text>
         </Link>
       </View>
-    </ScrollView>
+    </SafeAreaView>
   );
 };
 
