@@ -1,5 +1,6 @@
+import GoogleTextInput from "@/app/components/GoogleTextInput";
 import RideCard from "@/app/components/RideCard";
-import { images } from "@/app/constants";
+import { icons, images } from "@/app/constants";
 import { useUser } from "@clerk/clerk-expo";
 import { Link, router } from "expo-router";
 import {
@@ -121,7 +122,10 @@ const recentRides = [
 const Home = () => {
   const { user } = useUser();
   const loading = false;
+  console.log(user?.fullName);
 
+  const handleSignOut = () => {};
+  const handleDestinationPress = () => {};
   return (
     <SafeAreaView className="bg-general-500">
       <FlatList
@@ -147,6 +151,39 @@ const Home = () => {
               <ActivityIndicator size="small" color="#000" />
             )}
           </View>
+        )}
+        ListHeaderComponent={() => (
+          <>
+            <View className="flex flex-row items-center justify-between my-5">
+              <Text className="text-2xl font-JakartaExtraBold">
+                Welcome,{" "}
+                {user?.firstName ||
+                  user?.emailAddresses[0].emailAddress.split("@")[0]}
+                👋
+              </Text>
+              <TouchableOpacity
+                onPress={handleSignOut}
+                className="justify-center items-center w-10 h-10 rounded-full bg-white"
+              >
+                <Image source={icons.out} className="w-4 h-4" />
+              </TouchableOpacity>
+            </View>
+            <GoogleTextInput
+              icon={icons.search}
+              containerStyle="bg-white shadow-md shadow-neutral-300"
+              handlePress={handleDestinationPress}
+            />
+            <>
+              <Text className="text-xl font-JakartaBold mt-5 mb-3">
+                Your current location
+              </Text>
+              <View className="flex flex-row items-center bg-transparent h-[300px]"></View>
+            </>
+
+            <Text className="text-xl font-JakartaBold mt-5 mb-3">
+              Recent Rides
+            </Text>
+          </>
         )}
       />
     </SafeAreaView>
