@@ -50,6 +50,12 @@ const RideCard = ({
                 {destination_address}
               </Text>
             </View>
+            <View className="flex flex-row items-center gap-x-2">
+              <Image source={icons.point} className="w-5 h-5" />
+              <Text className="text-md font-JakartaMedium" numberOfLines={1}>
+                {destination_address}
+              </Text>
+            </View>
           </View>
         </View>
 
