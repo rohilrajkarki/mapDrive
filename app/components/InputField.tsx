@@ -46,11 +46,6 @@ const InputField = ({
               secureTextEntry={secureTextEntry && isPasswordVisible}
               {...props}
             />
-            <TextInput
-              className={`rounded-full p-4 font-JakartaSemiBold text-[15px] flex-1 ${inputStyle} text-left`}
-              secureTextEntry={secureTextEntry && isPasswordVisible}
-              {...props}
-            />
             {secureTextEntry && (
               <TouchableOpacity
                 onPress={() => setIsPasswordVisible(!isPasswordVisible)}
