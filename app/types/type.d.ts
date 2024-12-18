@@ -52,14 +52,7 @@ declare interface Ride {
     car_seats: number;
   };
 }
-declare interface ButtonPropss extends TouchableOpacityPropss {
-  title: string;
-  bgVariant?: "primary" | "secondary" | "danger" | "outline" | "success";
-  textVariant?: "primary" | "default" | "secondary" | "danger" | "success";
-  IconLeft?: React.ComponentType<any>;
-  IconRight?: React.ComponentType<any>;
-  className?: string;
-}
+
 declare interface Rider {
   origin_address: string;
   destination_address: string;
