@@ -2,7 +2,9 @@ import GoogleTextInput from "@/app/components/GoogleTextInput";
 import Maps from "@/app/components/Maps";
 import RideCard from "@/app/components/RideCard";
 import { icons, images } from "@/app/constants";
+import { useLocationStore } from "@/store";
 import { useUser } from "@clerk/clerk-expo";
+import { useEffect, useState } from "react";
 import {
   ActivityIndicator,
   FlatList,
@@ -12,6 +14,7 @@ import {
   View,
 } from "react-native";
 import { SafeAreaView } from "react-native-safe-area-context";
+import * as Location from "expo-location";
 
 const recentRides = [
   {
@@ -120,12 +123,48 @@ const recentRides = [
   },
 ];
 const Home = () => {
+  const { setUserLocation } = useLocationStore();
+
   const { user } = useUser();
   const loading = false;
   console.log(user?.fullName);
 
+  const [hasPermission, setHasPermission] = useState<boolean>(false);
+
   const handleSignOut = () => {};
   const handleDestinationPress = () => {};
+
+  useEffect(() => {
+    (async () => {
+      let enabled = await Location?.hasServicesEnabledAsync();
+      console.log("enabled", enabled);
+
+      let status = (await Location?.getProviderStatusAsync())
+        .locationServicesEnabled;
+
+      console.log("status", status);
+      // if (status !== "granted") {
+      //   setHasPermission(false);
+      //   return;
+      // }
+      setHasPermission(true);
+      let location = await Location?.getCurrentPositionAsync({});
+
+      console.log("the location", location);
+      const address = await Location.reverseGeocodeAsync({
+        latitude: location.coords?.latitude!,
+        longitude: location.coords?.longitude!,
+      });
+
+      setUserLocation({
+        latitude: location.coords?.latitude,
+        longitude: location.coords?.longitude,
+        address: `${address[0].name}, ${address[0].region}`,
+      });
+    })();
+  }, []);
+
+  console.log("haspermission", hasPermission);
   return (
     <SafeAreaView className="bg-general-500">
       <FlatList
